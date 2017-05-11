@@ -1,7 +1,9 @@
 package com.synacy.whitelabel.mystudentgrader.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +21,17 @@ public class StudentController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<Student> fetchAllStudents() {
-		return studentService.fetchAll();
+	public ResponseEntity fetchAllStudents(@RequestParam(value = "offset", required = false) Integer offset,
+	                                       @RequestParam(value = "max", required = false) Integer max) {
+		if (offset == null && max == null) {
+			List<Student> allStudents = studentService.fetchAll();
+			return ResponseEntity.ok().body(allStudents);
+		}
+		else {
+			//We can add checking here to validate that both max and offset are specified
+			Page<Student> paginatedStudents = studentService.fetchPaginatedStudents(offset, max);
+			return ResponseEntity.ok().body(paginatedStudents);
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
