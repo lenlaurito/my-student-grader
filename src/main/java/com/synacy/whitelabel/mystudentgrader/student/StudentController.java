@@ -1,6 +1,7 @@
 package com.synacy.whitelabel.mystudentgrader.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class StudentController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
 	public Student createNewStudent(@RequestBody Student studentRequest) {
 		return  studentService.createStudent(studentRequest.getName(), studentRequest.getAge(),
 				studentRequest.getGender(), studentRequest.getYearLevel());
@@ -37,6 +39,7 @@ public class StudentController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value="/{studentId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteStudent(@PathVariable(value="studentId") Long studentId) {
 		Student student = studentService.fetchById(studentId);
 		studentService.deleteStudent(student);

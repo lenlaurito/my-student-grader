@@ -3,6 +3,7 @@ package com.synacy.whitelabel.mystudentgrader.student.grade;
 import com.synacy.whitelabel.mystudentgrader.student.Student;
 import com.synacy.whitelabel.mystudentgrader.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class GradeController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
 	public Grade createGradeForStudent(@PathVariable(value = "studentId") Long studentId,
 	                                   @RequestBody Grade gradeRequest) {
 		Student student = studentService.fetchById(studentId);
@@ -47,6 +49,7 @@ public class GradeController {
 	}
 
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{gradeId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteGradeOfStudent(@PathVariable(value = "studentId") Long studentId,
 	                                 @PathVariable(value = "gradeId") Long gradeId) {
 		Student student = studentService.fetchById(studentId);
