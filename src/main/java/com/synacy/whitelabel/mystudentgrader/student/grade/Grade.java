@@ -1,5 +1,6 @@
 package com.synacy.whitelabel.mystudentgrader.student.grade;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.synacy.whitelabel.mystudentgrader.student.Student;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,9 +10,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-@Getter
-@EqualsAndHashCode(of = {"id"})
+@Getter @EqualsAndHashCode(of = {"id"})
 @Entity
+@JsonSerialize(using = GradeSerializer.class)
 public class Grade {
 
 	@Id @GeneratedValue
