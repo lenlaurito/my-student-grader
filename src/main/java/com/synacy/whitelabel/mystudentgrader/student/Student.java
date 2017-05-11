@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -17,16 +18,18 @@ public class Student {
 	@Id @GeneratedValue
 	private Long id;
 
-	@Setter
+	@Setter @NotNull
 	private String name;
 
 	@Setter
 	private int age;
 
-	@Setter
+	@Setter @NotNull
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
-	@Setter
+	@Setter @NotNull
+	@Enumerated(EnumType.STRING)
 	private YearLevel yearLevel;
 
 	@Setter @JsonIgnore

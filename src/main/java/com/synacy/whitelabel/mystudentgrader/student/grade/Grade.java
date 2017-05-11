@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Getter
@@ -16,14 +17,15 @@ public class Grade {
 	@Id @GeneratedValue
 	private Long id;
 
-	@Setter
+	@Setter @NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Student student;
 
-	@Setter
+	@Setter @NotNull
+	@Enumerated(EnumType.STRING)
 	private Subject subject;
 
-	@Setter
+	@Setter @NotNull
 	private BigDecimal finalGrade;
 
 }
