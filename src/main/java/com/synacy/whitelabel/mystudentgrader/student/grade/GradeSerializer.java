@@ -13,6 +13,7 @@ public class GradeSerializer extends JsonObjectSerializer<Grade> {
 
 	@Override
 	protected void serializeObject(Grade grade, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+		jgen.writeNumberField("id", grade.getId());
 		jgen.writeNumberField("studentId", grade.getStudent().getId());
 		jgen.writeStringField("subject", grade.getSubject().name());
 		jgen.writeNumberField("finalGrade", grade.getFinalGrade());
