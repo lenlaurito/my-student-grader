@@ -1,5 +1,6 @@
 package com.synacy.whitelabel.mystudentgrader.student.grade;
 
+import com.synacy.whitelabel.mystudentgrader.ResourceNotFoundException;
 import com.synacy.whitelabel.mystudentgrader.student.Student;
 import com.synacy.whitelabel.mystudentgrader.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,22 @@ public class GradeController {
 	public Grade fetchGradeOfStudent(@PathVariable(value = "studentId") Long studentId,
 	                                 @PathVariable(value = "gradeId") Long gradeId) {
 		Student student = studentService.fetchById(studentId);
-		return gradeService.fetchByStudentAndId(student, gradeId);
+		if (student == null) {
+			throw new ResourceNotFoundException("Student does not exist");
+		}
+		Grade grade = gradeService.fetchByStudentAndId(student, gradeId);
+		if (grade == null) {
+			throw new ResourceNotFoundException("Grade does not exist for student");
+		}
+		return grade;
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Grade> fetchAllGradesOfStudent(@PathVariable(value = "studentId") Long studentId) {
 		Student student = studentService.fetchById(studentId);
+		if (student == null) {
+			throw new ResourceNotFoundException("Student does not exist");
+		}
 		return gradeService.fetchAllGradesOfStudent(student);
 	}
 
@@ -36,6 +47,9 @@ public class GradeController {
 	public Grade createGradeForStudent(@PathVariable(value = "studentId") Long studentId,
 	                                   @RequestBody Grade gradeRequest) {
 		Student student = studentService.fetchById(studentId);
+		if (student == null) {
+			throw new ResourceNotFoundException("Student does not exist");
+		}
 		return gradeService.createGrade(student, gradeRequest.getSubject(), gradeRequest.getFinalGrade());
 	}
 
@@ -44,7 +58,13 @@ public class GradeController {
 	                                  @PathVariable(value = "gradeId") Long gradeId,
 	                                  @RequestBody Grade gradeRequest) {
 		Student student = studentService.fetchById(studentId);
+		if (student == null) {
+			throw new ResourceNotFoundException("Student does not exist");
+		}
 		Grade grade = gradeService.fetchByStudentAndId(student, gradeId);
+		if (grade == null) {
+			throw new ResourceNotFoundException("Grade does not exist for student");
+		}
 		return gradeService.updateGrade(grade, student, gradeRequest.getSubject(), gradeRequest.getFinalGrade());
 	}
 
@@ -53,7 +73,13 @@ public class GradeController {
 	public void deleteGradeOfStudent(@PathVariable(value = "studentId") Long studentId,
 	                                 @PathVariable(value = "gradeId") Long gradeId) {
 		Student student = studentService.fetchById(studentId);
+		if (student == null) {
+			throw new ResourceNotFoundException("Student does not exist");
+		}
 		Grade grade = gradeService.fetchByStudentAndId(student, gradeId);
+		if (grade == null) {
+			throw new ResourceNotFoundException("Grade does not exist for student");
+		}
 		gradeService.deleteGrade(grade);
 	}
 

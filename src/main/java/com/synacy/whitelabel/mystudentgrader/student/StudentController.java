@@ -1,5 +1,6 @@
 package com.synacy.whitelabel.mystudentgrader.student;
 
+import com.synacy.whitelabel.mystudentgrader.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,10 @@ public class StudentController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{studentId}")
 	public Student fetchStudent(@PathVariable(value="studentId") Long studentId) {
+		Student student = studentService.fetchById(studentId);
+		if (student == null) {
+			throw new ResourceNotFoundException("Student does not exist");
+		}
 		return studentService.fetchById(studentId);
 	}
 
@@ -34,6 +39,9 @@ public class StudentController {
 	public Student updateStudent(@PathVariable(value="studentId") Long studentId,
 	                             @RequestBody Student studentRequest) {
 		Student student = studentService.fetchById(studentId);
+		if (student == null) {
+			throw new ResourceNotFoundException("Student does not exist");
+		}
 		return studentService.updateStudent(student, studentRequest.getName(), studentRequest.getAge(),
 				studentRequest.getGender(), studentRequest.getYearLevel());
 	}
@@ -42,6 +50,9 @@ public class StudentController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteStudent(@PathVariable(value="studentId") Long studentId) {
 		Student student = studentService.fetchById(studentId);
+		if (student == null) {
+			throw new ResourceNotFoundException("Student does not exist");
+		}
 		studentService.deleteStudent(student);
 	}
 }
